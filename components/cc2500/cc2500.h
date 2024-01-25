@@ -198,15 +198,15 @@ class CC2500Component: public Component, public spi::SPIDevice<spi::BIT_ORDER_MS
 		spi::CLOCK_POLARITY_LOW, spi::CLOCK_PHASE_LEADING, spi::DATA_RATE_2MHZ> {
 public:
 	void setup() override;
-//	void loop() override;
+	void loop() override;
 	void dump_config() override;
 
 	void set_output_power(uint8_t output_power) {
 		this->output_power_ = output_power;
 	}
-//	void set_sniff_after_x_commands(uint16_t times) {
-//		this->sniff_after_x_commands_ = times;
-//	}
+	void set_sniff_after_x_commands(uint16_t times) {
+		this->sniff_after_x_commands_ = times;
+	}
 
 	void add_device(CC2500Client *device) { this->devices_.push_back(device); }
 //	void queue_command(Command command);
@@ -216,15 +216,15 @@ protected:
 	void reset_();
 	void write_reg_(uint8_t address, uint8_t value);
 	void write_reg_(uint8_t address, uint8_t *data, uint8_t length);
-//	uint8_t read_reg_(uint8_t address);
+	uint8_t read_reg_(uint8_t address);
 	void send_strobe_(uint8_t strobe);
-//	void sniff_();
+	void sniff_();
 
 	// 0xBB -2dB
 	// 0xFE 0dB
 	// 0xFF +1dB
 	optional<uint8_t> output_power_;
-//	optional<uint16_t> sniff_after_x_commands_;
+	optional<uint16_t> sniff_after_x_commands_;
 	std::vector<CC2500Client *> devices_;
 
 //	std::list<Command> command_queue_;
