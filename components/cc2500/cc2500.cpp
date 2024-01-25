@@ -10,128 +10,173 @@ static const char *TAG = "cc2500";
 
 void CC2500Component::setup() {
 	ESP_LOGCONFIG(TAG, "Setting up Living Colors gen 1 component...");
+
 	this->spi_setup();
+    this->enable();
+    this->send_strobe_(CC2500_SRES);
+    this->write_reg_(REG_IOCFG2, VAL_IOCFG2);
+    this->write_reg_(REG_IOCFG0, VAL_IOCFG0);
+    this->write_reg_(REG_PKTLEN, VAL_PKTLEN);
+    this->write_reg_(REG_PKTCTRL1, VAL_PKTCTRL1);
+    this->write_reg_(REG_PKTCTRL0, VAL_PKTCTRL0);
+    this->write_reg_(REG_ADDR, VAL_ADDR);
+    this->write_reg_(REG_CHANNR, VAL_CHANNR);
+    this->write_reg_(REG_FSCTRL1, VAL_FSCTRL1);
+    this->write_reg_(REG_FSCTRL0, VAL_FSCTRL0);
+    this->write_reg_(REG_FREQ2, VAL_FREQ2);
+    this->write_reg_(REG_FREQ1, VAL_FREQ1);
+    this->write_reg_(REG_FREQ0, VAL_FREQ0);
+    this->write_reg_(REG_MDMCFG4, VAL_MDMCFG4);
+    this->write_reg_(REG_MDMCFG3, VAL_MDMCFG3);
+    this->write_reg_(REG_MDMCFG2, VAL_MDMCFG2);
+    this->write_reg_(REG_MDMCFG1, VAL_MDMCFG1);
+    this->write_reg_(REG_MDMCFG0, VAL_MDMCFG0);
+    this->write_reg_(REG_DEVIATN, VAL_DEVIATN);
+    this->write_reg_(REG_MCSM2, VAL_MCSM2);
+    this->write_reg_(REG_MCSM1, VAL_MCSM1);
+    this->write_reg_(REG_MCSM0, VAL_MCSM0);
+    this->write_reg_(REG_FOCCFG, VAL_FOCCFG);
+    this->write_reg_(REG_BSCFG, VAL_BSCFG);
+    this->write_reg_(REG_AGCCTRL2, VAL_AGCCTRL2);
+    this->write_reg_(REG_AGCCTRL1, VAL_AGCCTRL1);
+    this->write_reg_(REG_AGCCTRL0, VAL_AGCCTRL0);
+    this->write_reg_(REG_WOREVT1, VAL_WOREVT1);
+    this->write_reg_(REG_WOREVT0, VAL_WOREVT0);
+    this->write_reg_(REG_WORCTRL, VAL_WORCTRL);
+    this->write_reg_(REG_FREND1, VAL_FREND1);
+    this->write_reg_(REG_FREND0, VAL_FREND0);
+    this->write_reg_(REG_FSCAL3, VAL_FSCAL3);
+    this->write_reg_(REG_FSCAL2, VAL_FSCAL2);
+    this->write_reg_(REG_FSCAL1, VAL_FSCAL1);
+    this->write_reg_(REG_FSCAL0, VAL_FSCAL0);
+    this->write_reg_(REG_RCCTRL1, VAL_RCCTRL1);
+    this->write_reg_(REG_RCCTRL0, VAL_RCCTRL0);
+    this->write_reg_(REG_FSTEST, VAL_FSTEST);
+    this->write_reg_(0x3E, 0xFF);
+    this->disable();
 
-    // reset device (0x30)
-	// this->send_strobe_(CC2500_SRES);
-    this->reset_();
-    this->reset_();
-
-//    // GDO2 Output Pin Configuration
-//    // this->write_reg_(REG_IOCFG2, VAL_IOCFG2_DEFAULT);
-//    //this->write_reg_(REG_IOCFG2, 0x06);
+//	this->spi_setup();
 //
-//    // GDO1 Output Pin Configuration
-//    //this->write_reg_(REG_IOCFG1, 0x01);
-//    this->write_reg_(REG_IOCFG1, VAL_IOCFG1_DEFAULT);
+//    // reset device (0x30)
+//	// this->send_strobe_(CC2500_SRES);
+//    this->reset_();
+//    this->reset_();
 //
-//    // GDO0 Output Pin Configuration
-//    // this->write_reg_(REG_IOCFG0, 0x06); // 0x06
+////    // GDO2 Output Pin Configuration
+////    // this->write_reg_(REG_IOCFG2, VAL_IOCFG2_DEFAULT);
+////    //this->write_reg_(REG_IOCFG2, 0x06);
+////
+////    // GDO1 Output Pin Configuration
+////    //this->write_reg_(REG_IOCFG1, 0x01);
+////    this->write_reg_(REG_IOCFG1, VAL_IOCFG1_DEFAULT);
+////
+////    // GDO0 Output Pin Configuration
+////    // this->write_reg_(REG_IOCFG0, 0x06); // 0x06
+////
+////    // RX FIFO and TX FIFO Thresholds
+////    //this->write_reg_(REG_FIFOTHR, 0x0D);
+////    this->write_reg_(REG_FIFOTHR, VAL_FIFOTHR_DEFAULT);
+////
+////    // Packet Length
+////    this->write_reg_(REG_PKTLEN, VAL_PKTLEN_DEFAULT); // 0xFF
+////
+////    // Packet Automation Control
+////    this->write_reg_(REG_PKTCTRL1, VAL_PKTCTRL1_DEFAULT);
+////    //this->write_reg_(REG_PKTCTRL0, VAL_PKTCTRL0); // 0x05, Data whitening off
+////    this->write_reg_(REG_PKTCTRL0, VAL_PKTCTRL0_DEFAULT);
 //
-//    // RX FIFO and TX FIFO Thresholds
-//    //this->write_reg_(REG_FIFOTHR, 0x0D);
-//    this->write_reg_(REG_FIFOTHR, VAL_FIFOTHR_DEFAULT);
+//    // Frequency Synthesizer Control
+//    this->write_reg_(REG_FSCTRL1, VAL_FSCTRL1); // 0x09
+//    this->write_reg_(REG_FSCTRL0, VAL_FSCTRL0); // 0x00
 //
-//    // Packet Length
-//    this->write_reg_(REG_PKTLEN, VAL_PKTLEN_DEFAULT); // 0xFF
+//    // Frequency Control Word
+//    this->write_reg_(REG_FREQ2, VAL_FREQ2); // 0x5D
+//    this->write_reg_(REG_FREQ1, VAL_FREQ1); // 0x93
+//    this->write_reg_(REG_FREQ0, VAL_FREQ0); // 0xB1
 //
-//    // Packet Automation Control
-//    this->write_reg_(REG_PKTCTRL1, VAL_PKTCTRL1_DEFAULT);
-//    //this->write_reg_(REG_PKTCTRL0, VAL_PKTCTRL0); // 0x05, Data whitening off
-//    this->write_reg_(REG_PKTCTRL0, VAL_PKTCTRL0_DEFAULT);
-
-    // Frequency Synthesizer Control
-    this->write_reg_(REG_FSCTRL1, VAL_FSCTRL1); // 0x09
-    this->write_reg_(REG_FSCTRL0, VAL_FSCTRL0); // 0x00
-
-    // Frequency Control Word
-    this->write_reg_(REG_FREQ2, VAL_FREQ2); // 0x5D
-    this->write_reg_(REG_FREQ1, VAL_FREQ1); // 0x93
-    this->write_reg_(REG_FREQ0, VAL_FREQ0); // 0xB1
-
-    // Modem Configuration
-    this->write_reg_(REG_MDMCFG4, VAL_MDMCFG4); // 0x2D
-    this->write_reg_(REG_MDMCFG3, VAL_MDMCFG3); // 0x3B
-    this->write_reg_(REG_MDMCFG2, VAL_MDMCFG2); // 0x73, Modulation format MSK
-    // this->write_reg_(REG_MDMCFG1, VAL_MDMCFG1); // 0xA2
-    this->write_reg_(REG_MDMCFG1, VAL_MDMCFG1_DEFAULT);
-    this->write_reg_(REG_MDMCFG0, VAL_MDMCFG0_DEFAULT);
-
-//    // Modem Deviation Setting
-//    // this->write_reg_(REG_DEVIATN, 0x01);
-//    //this->write_reg_(REG_DEVIATN, 0x00);
-//    this->write_reg_(REG_DEVIATN, VAL_DEVIATN_DEFAULT);
+//    // Modem Configuration
+//    this->write_reg_(REG_MDMCFG4, VAL_MDMCFG4); // 0x2D
+//    this->write_reg_(REG_MDMCFG3, VAL_MDMCFG3); // 0x3B
+//    this->write_reg_(REG_MDMCFG2, VAL_MDMCFG2); // 0x73, Modulation format MSK
+//    // this->write_reg_(REG_MDMCFG1, VAL_MDMCFG1); // 0xA2
+//    this->write_reg_(REG_MDMCFG1, VAL_MDMCFG1_DEFAULT);
+//    this->write_reg_(REG_MDMCFG0, VAL_MDMCFG0_DEFAULT);
 //
-//    // this->write_reg_(REG_MCSM2, 0x07); // 0x07
-//    // this->write_reg_(REG_MCSM1, 0x30); // 0x30
+////    // Modem Deviation Setting
+////    // this->write_reg_(REG_DEVIATN, 0x01);
+////    //this->write_reg_(REG_DEVIATN, 0x00);
+////    this->write_reg_(REG_DEVIATN, VAL_DEVIATN_DEFAULT);
+////
+////    // this->write_reg_(REG_MCSM2, 0x07); // 0x07
+////    // this->write_reg_(REG_MCSM1, 0x30); // 0x30
+////
+//    // Main Radio Control State Machine
+//    //this->write_reg_(REG_MCSM0, VAL_MCSM0); // 0x18
+//    //this->write_reg_(REG_MCSM0, VAL_MCSM0_DEFAULT);
+//    this->write_reg_(REG_MCSM0, 0b00010100); // Automatically calibrate when going from IDLE to RX or TX (or FSTXON)
 //
-    // Main Radio Control State Machine
-    //this->write_reg_(REG_MCSM0, VAL_MCSM0); // 0x18
-    //this->write_reg_(REG_MCSM0, VAL_MCSM0_DEFAULT);
-    this->write_reg_(REG_MCSM0, 0b00010100); // Automatically calibrate when going from IDLE to RX or TX (or FSTXON)
-
-//    // Frequency Offset Compensation
-//    //this->write_reg_(REG_FOCCFG, VAL_FOCCFG); // 0x1D
-//    this->write_reg_(REG_FOCCFG, VAL_FOCCFG_DEFAULT);
+////    // Frequency Offset Compensation
+////    //this->write_reg_(REG_FOCCFG, VAL_FOCCFG); // 0x1D
+////    this->write_reg_(REG_FOCCFG, VAL_FOCCFG_DEFAULT);
+////
+////    // Bit Synchronization Configuration
+////    //this->write_reg_(REG_BSCFG, VAL_BSCFG); // 0x1C
+////    this->write_reg_(REG_BSCFG, VAL_BSCFG_DEFAULT);
+////
+////    // AGC Control
+////    // this->write_reg_(REG_AGCCTRL2, VAL_AGCCTRL2); // 0xC7
+////    //this->write_reg_(REG_AGCCTRL2, 0x07);
+////    this->write_reg_(REG_AGCCTRL2, VAL_AGCCTRL2_DEFAULT);
+////    //this->write_reg_(REG_AGCCTRL1, VAL_AGCCTRL1); // 0x00
+////    this->write_reg_(REG_AGCCTRL1, VAL_AGCCTRL1_DEFAULT);
+////    //this->write_reg_(REG_AGCCTRL0, VAL_AGCCTRL0); // 0xB2
+////    this->write_reg_(REG_AGCCTRL0, VAL_AGCCTRL0_DEFAULT);
+////
+////    // this->write_reg_(REG_WOREVT1, 0x87);
+////    // this->write_reg_(REG_WOREVT0, 0x6B);
+////    // this->write_reg_(REG_WORCTRL, 0xF8);
+////
+////    // Front End RX Configuration
+////    //this->write_reg_(REG_FREND1, 0xB6); // 0xB6
+////    this->write_reg_(REG_FREND1, VAL_FREND1_DEFAULT); // 0x56, Reset
+////
+////    // Front End TX configuration
+////    //this->write_reg_(REG_FREND0, 0x10); // 0x10
+////    this->write_reg_(REG_FREND0, VAL_FREND0_DEFAULT); // 0x08, Reset
+////
+////    // Frequency Synthesizer Calibration
+////    //this->write_reg_(REG_FSCAL3, 0xEA); // 0xEA
+////    this->write_reg_(REG_FSCAL3, VAL_FSCAL3_DEFAULT); // 0xA9, Reset
+////    this->write_reg_(REG_FSCAL2, VAL_FSCAL2_DEFAULT); // 0x0A, Reset
+////    //this->write_reg_(REG_FSCAL1,  0x00); // 0x00
+////    this->write_reg_(REG_FSCAL1, VAL_FSCAL1_DEFAULT); // 0x20, Reset
+////    //this->write_reg_(REG_FSCAL0,  0x11); // 0x11
+////    this->write_reg_(REG_FSCAL0, VAL_FSCAL0_DEFAULT); // 0x11
+////
+////    // RC Oscillator Configuration
+////	this->write_reg_(REG_RCCTRL1, VAL_RCCTRL1_DEFAULT); // 0x41, Reset
+////	this->write_reg_(REG_RCCTRL0, VAL_RCCTRL0_DEFAULT); // 0x00, Reset
+////
+////    // Frequency Synthesizer Calibration Control
+////	//this->write_reg_(REG_FSTEST, VAL_FSTEST_DEFAULT); // 0x59, Reset. For test only. Do not write to this register.
+////
+////    // Various Test Settings
+////    this->write_reg_(REG_TEST2, VAL_TEST2_DEFAULT); // 0x88, Reset
+////    this->write_reg_(REG_TEST1, VAL_TEST1_DEFAULT); // 0x31, Reset
+////    this->write_reg_(REG_TEST0, VAL_TEST0_DEFAULT); // 0x0B, Reset
 //
-//    // Bit Synchronization Configuration
-//    //this->write_reg_(REG_BSCFG, VAL_BSCFG); // 0x1C
-//    this->write_reg_(REG_BSCFG, VAL_BSCFG_DEFAULT);
+//    // Output Power Programming
+//    // this->write_reg_(REG_PATABLE, 0xFF);
+//    this->write_reg_(REG_PATABLE, this->output_power_.value_or(0xFF));
 //
-//    // AGC Control
-//    // this->write_reg_(REG_AGCCTRL2, VAL_AGCCTRL2); // 0xC7
-//    //this->write_reg_(REG_AGCCTRL2, 0x07);
-//    this->write_reg_(REG_AGCCTRL2, VAL_AGCCTRL2_DEFAULT);
-//    //this->write_reg_(REG_AGCCTRL1, VAL_AGCCTRL1); // 0x00
-//    this->write_reg_(REG_AGCCTRL1, VAL_AGCCTRL1_DEFAULT);
-//    //this->write_reg_(REG_AGCCTRL0, VAL_AGCCTRL0); // 0xB2
-//    this->write_reg_(REG_AGCCTRL0, VAL_AGCCTRL0_DEFAULT);
+//	// SIDLE
+//	this->send_strobe_(CC2500_SIDLE);
 //
-//    // this->write_reg_(REG_WOREVT1, 0x87);
-//    // this->write_reg_(REG_WOREVT0, 0x6B);
-//    // this->write_reg_(REG_WORCTRL, 0xF8);
+//	// SPWD - enter power down mode when CSn goes high
+//	this->send_strobe_(CC2500_SPWD);
 //
-//    // Front End RX Configuration
-//    //this->write_reg_(REG_FREND1, 0xB6); // 0xB6
-//    this->write_reg_(REG_FREND1, VAL_FREND1_DEFAULT); // 0x56, Reset
-//
-//    // Front End TX configuration
-//    //this->write_reg_(REG_FREND0, 0x10); // 0x10
-//    this->write_reg_(REG_FREND0, VAL_FREND0_DEFAULT); // 0x08, Reset
-//
-//    // Frequency Synthesizer Calibration
-//    //this->write_reg_(REG_FSCAL3, 0xEA); // 0xEA
-//    this->write_reg_(REG_FSCAL3, VAL_FSCAL3_DEFAULT); // 0xA9, Reset
-//    this->write_reg_(REG_FSCAL2, VAL_FSCAL2_DEFAULT); // 0x0A, Reset
-//    //this->write_reg_(REG_FSCAL1,  0x00); // 0x00
-//    this->write_reg_(REG_FSCAL1, VAL_FSCAL1_DEFAULT); // 0x20, Reset
-//    //this->write_reg_(REG_FSCAL0,  0x11); // 0x11
-//    this->write_reg_(REG_FSCAL0, VAL_FSCAL0_DEFAULT); // 0x11
-//
-//    // RC Oscillator Configuration
-//	this->write_reg_(REG_RCCTRL1, VAL_RCCTRL1_DEFAULT); // 0x41, Reset
-//	this->write_reg_(REG_RCCTRL0, VAL_RCCTRL0_DEFAULT); // 0x00, Reset
-//
-//    // Frequency Synthesizer Calibration Control
-//	//this->write_reg_(REG_FSTEST, VAL_FSTEST_DEFAULT); // 0x59, Reset. For test only. Do not write to this register.
-//
-//    // Various Test Settings
-//    this->write_reg_(REG_TEST2, VAL_TEST2_DEFAULT); // 0x88, Reset
-//    this->write_reg_(REG_TEST1, VAL_TEST1_DEFAULT); // 0x31, Reset
-//    this->write_reg_(REG_TEST0, VAL_TEST0_DEFAULT); // 0x0B, Reset
-
-    // Output Power Programming
-    // this->write_reg_(REG_PATABLE, 0xFF);
-    this->write_reg_(REG_PATABLE, this->output_power_.value_or(0xFF));
-
-	// SIDLE
-	this->send_strobe_(CC2500_SIDLE);
-
-	// SPWD - enter power down mode when CSn goes high
-	this->send_strobe_(CC2500_SPWD);
-
-	// SIDLE
-	this->send_strobe_(CC2500_SIDLE);
+//	// SIDLE
+//	this->send_strobe_(CC2500_SIDLE);
 }
 
 void CC2500Component::dump_config() {
