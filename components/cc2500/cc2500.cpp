@@ -143,34 +143,34 @@ void CC2500Component::dump_config() {
 //		ESP_LOGCONFIG(TAG, "  Sniff after X commands sent: %d", this->sniff_after_x_commands_.value());
 }
 
-//void CC2500Component::loop() {
-////	// Sniffing slows down command sending. Therefore we only sniff if we are
-////	// not sending commands
-////	if(!this->busy_) {
-////		this->busy_ = true;
-////		this->sniff_();
-////		this->busy_ = false;
-////	}
-//
-//	//	if (this->command_queue_.empty()) {
-////		this->sniff_();
-////	} else if (this->commands_sent_
-////			% this->sniff_after_x_commands_.value_or(5) == 0) {
-////		this->sniff_();
-////	}
-//
-////	if(!this->command_queue_.empty()) {
-////		delayMicroseconds(500);
-////		ESP_LOGV(TAG, "command queue size: %d", this->command_queue_.size());
-////		Command command = this->command_queue_.front();
-////		delayMicroseconds(500);
-////		this->send_command(command.data, command.length);
-////		delayMicroseconds(500);
-////		this->command_queue_.pop_front();
-////		delayMicroseconds(500);
-////	}
-//	delayMicroseconds(10);
-//}
+void CC2500Component::loop() {
+	// Sniffing slows down command sending. Therefore we only sniff if we are
+	// not sending commands
+	if(!this->busy_) {
+		this->busy_ = true;
+		this->sniff_();
+		this->busy_ = false;
+	}
+
+		if (this->command_queue_.empty()) {
+		this->sniff_();
+	} else if (this->commands_sent_
+			% this->sniff_after_x_commands_.value_or(5) == 0) {
+		this->sniff_();
+	}
+
+	if(!this->command_queue_.empty()) {
+		delayMicroseconds(500);
+		ESP_LOGV(TAG, "command queue size: %d", this->command_queue_.size());
+		Command command = this->command_queue_.front();
+		delayMicroseconds(500);
+		this->send_command(command.data, command.length);
+		delayMicroseconds(500);
+		this->command_queue_.pop_front();
+		delayMicroseconds(500);
+	}
+	delayMicroseconds(10);
+}
 
 void CC2500Component::reset_() {
 	this->enable();
@@ -196,13 +196,13 @@ void CC2500Component::write_reg_(uint8_t address, uint8_t *data, uint8_t length)
 	this->disable();
 }
 
-//uint8_t CC2500::read_reg_(uint8_t address) {
-//	address += 0x80;
-//	this->enable();
-//	uint8_t value = this->transfer_byte(address);
-//	this->disable();
-//	return value;
-//}
+uint8_t CC2500::read_reg_(uint8_t address) {
+	address += 0x80;
+	this->enable();
+	uint8_t value = this->transfer_byte(address);
+	this->disable();
+	return value;
+}
 
 void CC2500Component::send_strobe_(uint8_t strobe) {
 	this->enable();
@@ -210,17 +210,17 @@ void CC2500Component::send_strobe_(uint8_t strobe) {
 	this->disable();
 }
 
-//void CC2500::queue_command(Command command) {
-//	ESP_LOGV(TAG, "queue_command");
-//	ESP_LOGV(TAG, "  channel: %d", command.channel);
-//	ESP_LOGV(TAG, "  modulation: 0x%030X", (uint8_t) command.modulation);
-//	ESP_LOGV(TAG, "  manchester encoding: %s", command.manchester_encoding ? "enabled" : "disabled");
-//	ESP_LOGV(TAG, "  data: 0x%032"  PRIX64, command.data);
-//	ESP_LOGV(TAG, "  length: %d", command.length);
-//	auto pair = std::make_pair(address, Command { .data = data,
-//			.length = length });
-//	this->command_queue_.push_back(command);
-//}
+void CC2500::queue_command(Command command) {
+	ESP_LOGV(TAG, "queue_command");
+	ESP_LOGV(TAG, "  channel: %d", command.channel);
+	ESP_LOGV(TAG, "  modulation: 0x%030X", (uint8_t) command.modulation);
+	ESP_LOGV(TAG, "  manchester encoding: %s", command.manchester_encoding ? "enabled" : "disabled");
+	ESP_LOGV(TAG, "  data: 0x%032"  PRIX64, command.data);
+	ESP_LOGV(TAG, "  length: %d", command.length);
+	auto pair = std::make_pair(address, Command { .data = data,
+			.length = length });
+	this->command_queue_.push_back(command);
+}
 
 void CC2500Component::send_command(Command command) {
 	while(this->busy_) {
@@ -248,25 +248,25 @@ void CC2500Component::send_command(Command command) {
 	this->busy_ = false;
 }
 
-//void CC2500Component::sniff_() {
-//	std::vector < uint8_t > packet;
-//
-//	this->send_strobe_(CC2500_SRX);
-//	this->write_reg_(REG_IOCFG1, 0x01);
-//	delay(20);
-//
-//	uint8_t len = this->read_reg_(REG_FIFO);
-//	if (len > 15) {
-//		for (int i = 0; i < len; i++) {
-//			packet.push_back(this->read_reg_(REG_FIFO));
-//		}
-//
-//		ESP_LOGV(TAG, "Sniffed packet: 0x%032" PRIX64, packet);
-//		//this->on_remote_click_callback_.call(packet);
-//	}
-//	this->send_strobe_(CC2500_SIDLE);
-//	this->send_strobe_(CC2500_SFRX);
-//}
+void CC2500Component::sniff_() {
+	std::vector < uint8_t > packet;
+
+	this->send_strobe_(CC2500_SRX);
+	this->write_reg_(REG_IOCFG1, 0x01);
+	delay(20);
+
+	uint8_t len = this->read_reg_(REG_FIFO);
+	if (len > 15) {
+		for (int i = 0; i < len; i++) {
+			packet.push_back(this->read_reg_(REG_FIFO));
+		}
+
+		ESP_LOGV(TAG, "Sniffed packet: 0x%032" PRIX64, packet);
+		//this->on_remote_click_callback_.call(packet);
+	}
+	this->send_strobe_(CC2500_SIDLE);
+	this->send_strobe_(CC2500_SFRX);
+}
 
 void CC2500Client::set_parent(CC2500Component *parent) {
 	this->parent_ = parent;
