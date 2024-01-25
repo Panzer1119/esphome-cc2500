@@ -101,6 +101,7 @@ static const uint8_t VAL_PKTLEN_DEFAULT   = 0xFF;
 static const uint8_t VAL_PKTCTRL1_DEFAULT = 0x04;
 static const uint8_t VAL_PKTCTRL0_DEFAULT = 0x45;
 static const uint8_t VAL_ADDR     = 0x01;
+static const uint8_t VAL_CHANNR   = 0x10;
 static const uint8_t VAL_FSCTRL1  = 0x09;
 static const uint8_t VAL_FSCTRL0  = 0x00;
 static const uint8_t VAL_FREQ2    = 0x5D;

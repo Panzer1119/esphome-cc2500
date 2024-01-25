@@ -20,7 +20,7 @@ void CC2500Component::setup() {
     this->write_reg_(REG_PKTCTRL1, VAL_PKTCTRL1_DEFAULT);
     this->write_reg_(REG_PKTCTRL0, VAL_PKTCTRL0_DEFAULT);
     this->write_reg_(REG_ADDR, VAL_ADDR);
-    this->write_reg_(REG_CHANNR, VAL_CHANNR_DEFAULT);
+    this->write_reg_(REG_CHANNR, VAL_CHANNR);
     this->write_reg_(REG_FSCTRL1, VAL_FSCTRL1);
     this->write_reg_(REG_FSCTRL0, VAL_FSCTRL0);
     this->write_reg_(REG_FREQ2, VAL_FREQ2);
